@@ -1,0 +1,1 @@
+# GoToC - Markdown ToC generator

@@ -47,45 +47,59 @@ this will produce a nil tree
 				root: &node{
 					children: []*node{
 						{
-							depth:  1,
-							text:   "## Header 2",
-							header: " Header 2",
+							depth: 1,
+							header: Header{
+								Name: " Header 2",
+								Text: "## Header 2",
+							},
 							children: []*node{
 								{
-									depth:  4,
-									text:   "##### Header 5",
-									header: " Header 5",
+									depth: 4,
+									header: Header{
+										Name: " Header 5",
+										Text: "##### Header 5",
+									},
 									children: []*node{
 										{
-												depth:  5,
-												text:   "###### Header 6",
-												header: " Header 6",
+											depth: 5,
+											header: Header{
+												Name: " Header 6",
+												Text: "###### Header 6",
 											},
 										},
 									},
-								{
-									depth:  3,
-									text:   "#### Header 4",
-									header: " Header 4",
 								},
 								{
-									depth:  2,
-									text:   "### Header 3",
-									header: " Header 3",
+									depth: 3,
+									header: Header{
+										Name: " Header 4",
+										Text: "#### Header 4",
+									},
+								},
+								{
+									depth: 2,
+									header: Header{
+										Name: " Header 3",
+										Text: "### Header 3",
+									},
 									children: []*node{
 										{
-											depth:  4,
-											text:   "##### Header 5",
-											header: " Header 5",
+											depth: 4,
+											header: Header{
+												Name: " Header 5",
+												Text: "##### Header 5",
+											},
 										},
 									},
 								},
 							},
 						},
 						{
-							depth:  1,
-							text:   "## Header 2 2",
-							header: " Header 2 2",
+							depth: 1,
+							header: Header{
+								Name: " Header 2 2",
+								Text: "## Header 2 2",
+							},
 						},
 					},
 				},
@@ -119,67 +133,89 @@ test tester test
 `,
 			expectedTree: &tree{
 				root: &node{
-					depth:  0,
-					text:   "# Header 1",
-					header: " Header 1",
+					depth: 0,
+					header: Header{
+						Name: " Header 1",
+						Text: "# Header 1",
+					},
 					children: []*node{
 						{
-							depth:  1,
-							text:   "## Header 2",
-							header: " Header 2",
+							depth: 1,
+							header: Header{
+								Name: " Header 2",
+								Text: "## Header 2",
+							},
 							children: []*node{
 								{
-									depth:  2,
-									text:   "### Header 3",
-									header: " Header 3",
+									depth: 2,
+									header: Header{
+										Name: " Header 3",
+										Text: "### Header 3",
+									},
 								},
 							},
 						},
 						{
-							depth:  1,
-							text:   "## Header 2 2",
-							header: " Header 2 2",
+							depth: 1,
+							header: Header{
+								Name: " Header 2 2",
+								Text: "## Header 2 2",
+							},
 						},
 						{
-							depth:  1,
-							text:   "## Header 2 3",
-							header: " Header 2 3",
+							depth: 1,
+							header: Header{
+								Name: " Header 2 3",
+								Text: "## Header 2 3",
+							},
 							children: []*node{
 								{
-									depth:  2,
-									text:   "### Header 3 3",
-									header: " Header 3 3",
+									depth: 2,
+									header: Header{
+										Name: " Header 3 3",
+										Text: "### Header 3 3",
+									},
 									children: []*node{
 										{
-											depth:  3,
-											text:   "#### Header 4 3",
-											header: " Header 4 3",
+											depth: 3,
+											header: Header{
+												Name: " Header 4 3",
+												Text: "#### Header 4 3",
+											},
 											children: []*node{
 												{
-													depth:  5,
-													text:   "###### Header 6 3",
-													header: " Header 6 3",
+													depth: 5,
+													header: Header{
+														Name: " Header 6 3",
+														Text: "###### Header 6 3",
+													},
 												},
 											},
 										},
 									},
 								},
 								{
-									depth:  2,
-									text:   "### Header 3 4",
-									header: " Header 3 4",
+									depth: 2,
+									header: Header{
+										Name: " Header 3 4",
+										Text: "### Header 3 4",
+									},
 								},
 							},
 						},
 						{
-							depth:  1,
-							text:   "## Header 2 4",
-							header: " Header 2 4",
+							depth: 1,
+							header: Header{
+								Name: " Header 2 4",
+								Text: "## Header 2 4",
+							},
 							children: []*node{
 								{
-									depth:  2,
-									text:   "### Header 3 4",
-									header: " Header 3 4",
+									depth: 2,
+									header: Header{
+										Name: " Header 3 4",
+										Text: "### Header 3 4",
+									},
 								},
 							},
 						},
@@ -209,34 +245,47 @@ ignore this header above
 `,
 			expectedTree: &tree{
 				root: &node{
-					depth:  0,
-					text:   "# Header 1",
-					header: " Header 1",
+					depth: 0,
+					header: Header{
+						Name: " Header 1",
+						Text: "# Header 1",
+					},
+
 					children: []*node{
 						{
-							depth:  1,
-							text:   "## Header 2",
-							header: " Header 2",
+							depth: 1,
+							header: Header{
+								Name: " Header 2",
+								Text: "## Header 2",
+							},
 							children: []*node{
 								{
-									depth:  2,
-									text:   "### Header 3",
-									header: " Header 3",
+									depth: 2,
+									header: Header{
+										Name: " Header 3",
+										Text: "### Header 3",
+									},
 									children: []*node{
 										{
-											depth:  3,
-											text:   "#### Header 4",
-											header: " Header 4",
+											depth: 3,
+											header: Header{
+												Name: " Header 4",
+												Text: "#### Header 4",
+											},
 											children: []*node{
 												{
-													depth:  4,
-													text:   "##### Header 5",
-													header: " Header 5",
+													depth: 4,
+													header: Header{
+														Name: " Header 5",
+														Text: "##### Header 5",
+													},
 													children: []*node{
 														{
-															depth:  5,
-															text:   "###### Header 6",
-															header: " Header 6",
+															depth: 5,
+															header: Header{
+																Name: " Header 6",
+																Text: "###### Header 6",
+															},
 														},
 													},
 												},
@@ -255,12 +304,12 @@ ignore this header above
 			parser := NewParser()
 			doc := strings.NewReader(tc.document)
 
+			err := parser.Parse(doc)
 			if tc.wantErr {
-				require.Error(t, parser.Parse(doc))
+				require.Error(t, err)
 				return
 			}
 
-			require.NoError(t, parser.Parse(doc))
 			assert.Equal(t, tc.expectedTree, parser.tree)
 		})
 	}

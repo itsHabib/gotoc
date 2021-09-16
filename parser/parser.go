@@ -13,10 +13,10 @@ const (
 )
 
 type Parser struct {
-	depth    int
-	cursor   int
-	path     []*node
-	tree     *tree
+	depth  int
+	cursor int
+	path   []*node
+	tree   *tree
 }
 
 func NewParser() *Parser {
@@ -44,9 +44,11 @@ func (p *Parser) Parse(doc io.Reader) error {
 		}
 
 		n := node{
-			depth:  p.cursor - 1,
-			header: text[p.cursor:],
-			text:   text,
+			depth: p.cursor - 1,
+			header: Header{
+				Name: text[p.cursor:],
+				Text: text,
+			},
 		}
 
 		// root, this locks the root depth at p.cursor -1. If we encounter a
@@ -146,6 +148,30 @@ func (p *Parser) newChild(n *node) error {
 	return nil
 }
 
+func (p *Parser) WalkTree(f func(header Header, depth int)) {
+	if p.tree == nil || p.tree.root == nil {
+		return
+	}
+
+	stack := []nodeDepth{{p.tree.root, 0}}
+	for len(stack) > 0 {
+		cur := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		if cur.header.Text == "" {
+			continue
+		}
+
+		// call user defined function with text and depth
+		f(cur.header, cur.depth)
+
+		// add children to process in reverse order to maintain correct order
+		// of contents in file
+		for i := len(cur.children) - 1; i >= 0; i-- {
+			stack = append(stack, nodeDepth{cur.children[i], cur.depth + 1})
+		}
+	}
+}
+
 type tree struct {
 	root *node
 }
@@ -153,6 +179,15 @@ type tree struct {
 type node struct {
 	children []*node
 	depth    int
-	text     string
-	header   string
+	header   Header
+}
+
+type nodeDepth struct {
+	*node
+	depth int
+}
+
+type Header struct {
+	Name string
+	Text string
 }

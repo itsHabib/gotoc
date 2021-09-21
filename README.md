@@ -13,7 +13,7 @@ go build -o gotoc cmd/main.go
 ./gotoc -file ./cmd/EXAMPLE.md
 <!-- gotoc generated table of contents -->
 * [Tester](#tester)
-	* [Tester 2](#tester-2-)
+	* [Tester 2](#tester-2)
 		* [Test 3](#test-3)
 	* [Tester 2 2](#tester-2-2)
 		* [Tester 3 2](#tester-3-2)

@@ -76,7 +76,7 @@ func (i *Interpreter) GenerateToc() error {
 
 		// write table of content line based on header name and depth
 		i.toc += strings.Repeat("\t", depth) +
-			"* [" + trimmed + "](#" + i.formatHeaderLink(header) +
+			"* [" + trimmed + "](#" + i.formatHeaderLink(trimmed) +
 			suffix + ")\n"
 	})
 

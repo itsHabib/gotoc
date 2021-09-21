@@ -95,7 +95,6 @@ func (p *Parser) Parse(doc io.Reader) error {
 	return nil
 }
 
-
 // WalkTree walks the tree using DFS. A closure at each tree node is called
 // to allow caller to work with the header string and depth.
 func (p *Parser) WalkTree(f func(header string, depth int)) {
@@ -185,8 +184,8 @@ type tree struct {
 
 type node struct {
 	children []*node
-	depth  int
-	header header
+	depth    int
+	header   header
 }
 
 type nodeDepth struct {

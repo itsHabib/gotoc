@@ -33,7 +33,7 @@ func New(document Document) (*Interpreter, error) {
 		if _, err := os.Stat(document.Path); os.IsNotExist(err) {
 			return nil, errors.New("unable to create interpreter, no file found at document path")
 		}
-	} else if  document.Content == "" {
+	} else if document.Content == "" {
 		return nil, errors.New("unable to create interpreter, content is empty")
 	}
 

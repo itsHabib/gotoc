@@ -115,7 +115,8 @@ func addToc(file *os.File, toc string) (*bytes.Buffer, error) {
 
 func headerDepth(s string) int {
 	var depth int
-	for ; depth < len(s) && s[depth] == '#'; depth++ {}
+	for ; depth < len(s) && s[depth] == '#'; depth++ {
+	}
 
 	return depth
 }
@@ -140,7 +141,7 @@ func getFlags() (flags, error) {
 	if file != nil {
 		f.file = *file
 	}
-	if !f.write && !f.print{
+	if !f.write && !f.print {
 		f.print = true
 	}
 
@@ -155,8 +156,8 @@ func getFlags() (flags, error) {
 type flags struct {
 	print bool
 	write bool
-	file string
-	text string
+	file  string
+	text  string
 }
 
 func (f flags) validate() error {
@@ -176,8 +177,8 @@ func (f flags) validate() error {
 }
 
 func (f flags) toDocument() interpreter.Document {
-	return interpreter.Document {
+	return interpreter.Document{
 		Content: f.text,
-		Path: f.file,
+		Path:    f.file,
 	}
 }

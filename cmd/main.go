@@ -122,8 +122,8 @@ func headerDepth(s string) int {
 }
 
 func getFlags() (flags, error) {
-	printFlag := flag.Bool("print", false, "only print the table of contents string and not write it to file. the table of contents are printed by default, unless -write is used.")
-	write := flag.Bool("write", false, "write the table of contents string to given file. gotoc will attempt to write the contents after the root header #. If no root header is found the contents are written at the end of the file. This can not be used in conjunction with -print.")
+	printFlag := flag.Bool("print", false, "only print the table of contents string and not writeFlag it to file. the table of contents are printed by default, unless -writeFlag is used.")
+	writeFlag := flag.Bool("writeFlag", false, "writeFlag the table of contents string to given file. gotoc will attempt to writeFlag the contents after the root header #. If no root header is found the contents are NOT written.")
 	text := flag.String("text", "", "generate a table of contents from an input string. Can not be used in conjunction with the -file flag.")
 	file := flag.String("file", "", "path to a file to generate the table of contents from.")
 	flag.Parse()
@@ -132,8 +132,8 @@ func getFlags() (flags, error) {
 	if printFlag != nil {
 		f.print = *printFlag
 	}
-	if write != nil {
-		f.write = *write
+	if writeFlag != nil {
+		f.write = *writeFlag
 	}
 	if text != nil {
 		f.text = *text

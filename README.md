@@ -6,6 +6,19 @@
 go build -o gotoc cmd/main.go
 ```
 
+## Usage
+```bash
+Usage of ./gotoc:
+  -file string
+    	path to a file to generate the table of contents from.
+  -print
+    	only print the table of contents string and not write it to file. the table of contents are printed by default, unless -write is used.
+  -text string
+    	generate a table of contents from an input string. Can not be used in conjunction with the -file flag.
+  -write
+    	write the table of contents string to given file. gotoc will attempt to write the contents after the root header #. If no root header is found the contents are written at the end of the file. This can not be used in conjunction with -print.
+```
+
 ## Examples
 
 ### Printing Toc

@@ -1,13 +1,7 @@
 # GoToC - Markdown ToC generator
 
-## Installation
+## Build
 
-Using go get:
-```bash
-go get github.com/itsHabib/gotoc
-```
-
-From source:
 ```bash
 go build -o gotoc cmd/main.go
 ```

@@ -24,70 +24,70 @@ this will produce a nil tree
 `,
 		},
 		{
-			description: "Invalid Double Header 1",
+			description: "Invalid Double header 1",
 			document: `
-# Header 1
-## Header 2
-# Header 1 again invalid
+# header 1
+## header 2
+# header 1 again invalid
 `,
 			wantErr: true,
 		},
 		{
 			description: "Mixed header depths",
 			document: `
-## Header 2
-##### Header 5
-###### Header 6
-#### Header 4
-### Header 3
-##### Header 5
-## Header 2 2
+## header 2
+##### header 5
+###### header 6
+#### header 4
+### header 3
+##### header 5
+## header 2 2
 `,
 			expectedTree: &tree{
 				root: &node{
 					children: []*node{
 						{
 							depth: 1,
-							header: Header{
-								Name: " Header 2",
-								Text: "## Header 2",
+							header: header{
+								name: " header 2",
+								text: "## header 2",
 							},
 							children: []*node{
 								{
 									depth: 4,
-									header: Header{
-										Name: " Header 5",
-										Text: "##### Header 5",
+									header: header{
+										name: " header 5",
+										text: "##### header 5",
 									},
 									children: []*node{
 										{
 											depth: 5,
-											header: Header{
-												Name: " Header 6",
-												Text: "###### Header 6",
+											header: header{
+												name: " header 6",
+												text: "###### header 6",
 											},
 										},
 									},
 								},
 								{
 									depth: 3,
-									header: Header{
-										Name: " Header 4",
-										Text: "#### Header 4",
+									header: header{
+										name: " header 4",
+										text: "#### header 4",
 									},
 								},
 								{
 									depth: 2,
-									header: Header{
-										Name: " Header 3",
-										Text: "### Header 3",
+									header: header{
+										name: " header 3",
+										text: "### header 3",
 									},
 									children: []*node{
 										{
 											depth: 4,
-											header: Header{
-												Name: " Header 5",
-												Text: "##### Header 5",
+											header: header{
+												name: " header 5",
+												text: "##### header 5",
 											},
 										},
 									},
@@ -96,9 +96,9 @@ this will produce a nil tree
 						},
 						{
 							depth: 1,
-							header: Header{
-								Name: " Header 2 2",
-								Text: "## Header 2 2",
+							header: header{
+								name: " header 2 2",
+								text: "## header 2 2",
 							},
 						},
 					},
@@ -108,86 +108,86 @@ this will produce a nil tree
 		{
 			description: "Multi branched tree",
 			document: `
-# Header 1
+# header 1
 hello this is header one
 
-## Header 2
-### Header 3
+## header 2
+### header 3
 test tester test
 
-## Header 2 2
+## header 2 2
 
-## Header 2 3
+## header 2 3
 
-### Header 3 3
+### header 3 3
 
-#### Header 4 3
+#### header 4 3
 
-###### Header 6 3
+###### header 6 3
 
-### Header 3 4
+### header 3 4
 
-## Header 2 4
+## header 2 4
 
-### Header 3 4
+### header 3 4
 `,
 			expectedTree: &tree{
 				root: &node{
 					depth: 0,
-					header: Header{
-						Name: " Header 1",
-						Text: "# Header 1",
+					header: header{
+						name: " header 1",
+						text: "# header 1",
 					},
 					children: []*node{
 						{
 							depth: 1,
-							header: Header{
-								Name: " Header 2",
-								Text: "## Header 2",
+							header: header{
+								name: " header 2",
+								text: "## header 2",
 							},
 							children: []*node{
 								{
 									depth: 2,
-									header: Header{
-										Name: " Header 3",
-										Text: "### Header 3",
+									header: header{
+										name: " header 3",
+										text: "### header 3",
 									},
 								},
 							},
 						},
 						{
 							depth: 1,
-							header: Header{
-								Name: " Header 2 2",
-								Text: "## Header 2 2",
+							header: header{
+								name: " header 2 2",
+								text: "## header 2 2",
 							},
 						},
 						{
 							depth: 1,
-							header: Header{
-								Name: " Header 2 3",
-								Text: "## Header 2 3",
+							header: header{
+								name: " header 2 3",
+								text: "## header 2 3",
 							},
 							children: []*node{
 								{
 									depth: 2,
-									header: Header{
-										Name: " Header 3 3",
-										Text: "### Header 3 3",
+									header: header{
+										name: " header 3 3",
+										text: "### header 3 3",
 									},
 									children: []*node{
 										{
 											depth: 3,
-											header: Header{
-												Name: " Header 4 3",
-												Text: "#### Header 4 3",
+											header: header{
+												name: " header 4 3",
+												text: "#### header 4 3",
 											},
 											children: []*node{
 												{
 													depth: 5,
-													header: Header{
-														Name: " Header 6 3",
-														Text: "###### Header 6 3",
+													header: header{
+														name: " header 6 3",
+														text: "###### header 6 3",
 													},
 												},
 											},
@@ -196,25 +196,25 @@ test tester test
 								},
 								{
 									depth: 2,
-									header: Header{
-										Name: " Header 3 4",
-										Text: "### Header 3 4",
+									header: header{
+										name: " header 3 4",
+										text: "### header 3 4",
 									},
 								},
 							},
 						},
 						{
 							depth: 1,
-							header: Header{
-								Name: " Header 2 4",
-								Text: "## Header 2 4",
+							header: header{
+								name: " header 2 4",
+								text: "## header 2 4",
 							},
 							children: []*node{
 								{
 									depth: 2,
-									header: Header{
-										Name: " Header 3 4",
-										Text: "### Header 3 4",
+									header: header{
+										name: " header 3 4",
+										text: "### header 3 4",
 									},
 								},
 							},
@@ -226,65 +226,65 @@ test tester test
 		{
 			description: "Single list tree with all depths covered",
 			document: `
-# Header 1
+# header 1
 hello this is header one
 
-## Header 2
-### Header 3
+## header 2
+### header 3
 test tester test
 
-#### Header 4
+#### header 4
 something herre
-##### Header 5
+##### header 5
 something over there
-###### Header 6
+###### header 6
 last header to use
 
-####### Header 7 this should be ignored
+####### header 7 this should be ignored
 ignore this header above
 `,
 			expectedTree: &tree{
 				root: &node{
 					depth: 0,
-					header: Header{
-						Name: " Header 1",
-						Text: "# Header 1",
+					header: header{
+						name: " header 1",
+						text: "# header 1",
 					},
 
 					children: []*node{
 						{
 							depth: 1,
-							header: Header{
-								Name: " Header 2",
-								Text: "## Header 2",
+							header: header{
+								name: " header 2",
+								text: "## header 2",
 							},
 							children: []*node{
 								{
 									depth: 2,
-									header: Header{
-										Name: " Header 3",
-										Text: "### Header 3",
+									header: header{
+										name: " header 3",
+										text: "### header 3",
 									},
 									children: []*node{
 										{
 											depth: 3,
-											header: Header{
-												Name: " Header 4",
-												Text: "#### Header 4",
+											header: header{
+												name: " header 4",
+												text: "#### header 4",
 											},
 											children: []*node{
 												{
 													depth: 4,
-													header: Header{
-														Name: " Header 5",
-														Text: "##### Header 5",
+													header: header{
+														name: " header 5",
+														text: "##### header 5",
 													},
 													children: []*node{
 														{
 															depth: 5,
-															header: Header{
-																Name: " Header 6",
-																Text: "###### Header 6",
+															header: header{
+																name: " header 6",
+																text: "###### header 6",
 															},
 														},
 													},
@@ -301,7 +301,7 @@ ignore this header above
 		},
 	} {
 		t.Run(tc.description, func(t *testing.T) {
-			parser := NewParser()
+			parser := New()
 			doc := strings.NewReader(tc.document)
 
 			err := parser.Parse(doc)

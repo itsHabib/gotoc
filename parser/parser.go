@@ -12,6 +12,7 @@ const (
 	markDownHeaderChar     = '#'
 )
 
+// Parser is responsible for taking an io.Reader and producing the Toc tree.
 type Parser struct {
 	depth  int
 	cursor int
@@ -19,10 +20,13 @@ type Parser struct {
 	tree   *tree
 }
 
-func NewParser() *Parser {
+// New returns an instantiated instance of a Parser.
+func New() *Parser {
 	return &Parser{}
 }
 
+// Parse uses the doc and fills out the tree needed for the interpreter to
+// create the table of contents.
 func (p *Parser) Parse(doc io.Reader) error {
 	scanner := bufio.NewScanner(doc)
 	for scanner.Scan() {
@@ -45,9 +49,9 @@ func (p *Parser) Parse(doc io.Reader) error {
 
 		n := node{
 			depth: p.cursor - 1,
-			header: Header{
-				Name: text[p.cursor:],
-				Text: text,
+			header: header{
+				name: text[p.cursor:],
+				text: text,
 			},
 		}
 
@@ -89,6 +93,33 @@ func (p *Parser) Parse(doc io.Reader) error {
 	}
 
 	return nil
+}
+
+
+// WalkTree walks the tree using DFS. A closure at each tree node is called
+// to allow caller to work with the header string and depth.
+func (p *Parser) WalkTree(f func(header string, depth int)) {
+	if p.tree == nil || p.tree.root == nil {
+		return
+	}
+
+	stack := []nodeDepth{{p.tree.root, 0}}
+	for len(stack) > 0 {
+		cur := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		if cur.header.text == "" {
+			continue
+		}
+
+		// call user defined function with text and depth
+		f(cur.header.name, cur.depth)
+
+		// add children to process in reverse order to maintain correct order
+		// of contents in file
+		for i := len(cur.children) - 1; i >= 0; i-- {
+			stack = append(stack, nodeDepth{cur.children[i], cur.depth + 1})
+		}
+	}
 }
 
 func (p *Parser) climbPath(depth int) error {
@@ -148,38 +179,14 @@ func (p *Parser) newChild(n *node) error {
 	return nil
 }
 
-func (p *Parser) WalkTree(f func(header Header, depth int)) {
-	if p.tree == nil || p.tree.root == nil {
-		return
-	}
-
-	stack := []nodeDepth{{p.tree.root, 0}}
-	for len(stack) > 0 {
-		cur := stack[len(stack)-1]
-		stack = stack[:len(stack)-1]
-		if cur.header.Text == "" {
-			continue
-		}
-
-		// call user defined function with text and depth
-		f(cur.header, cur.depth)
-
-		// add children to process in reverse order to maintain correct order
-		// of contents in file
-		for i := len(cur.children) - 1; i >= 0; i-- {
-			stack = append(stack, nodeDepth{cur.children[i], cur.depth + 1})
-		}
-	}
-}
-
 type tree struct {
 	root *node
 }
 
 type node struct {
 	children []*node
-	depth    int
-	header   Header
+	depth  int
+	header header
 }
 
 type nodeDepth struct {
@@ -187,7 +194,7 @@ type nodeDepth struct {
 	depth int
 }
 
-type Header struct {
-	Name string
-	Text string
+type header struct {
+	name string
+	text string
 }

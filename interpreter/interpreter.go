@@ -16,6 +16,8 @@ const (
 	generatedComment = "<!-- gotoc generated table of contents -->"
 )
 
+// Interpreter is responsible for generating the table of contents string from
+// the parsers tree.
 type Interpreter struct {
 	document    Document
 	headerCount map[string]int
@@ -24,30 +26,27 @@ type Interpreter struct {
 	toc         string
 }
 
-func NewInterpreter(document Document) (*Interpreter, error) {
+// New returns an instantiated instance of an Interpreter. An interpreter
+// expects a document that contains either a path or content.
+func New(document Document) (*Interpreter, error) {
 	if document.Path != "" {
 		if _, err := os.Stat(document.Path); os.IsNotExist(err) {
-			return nil, errors.New("no file found at document path")
+			return nil, errors.New("unable to create interpreter, no file found at document path")
 		}
+	} else if  document.Content == "" {
+		return nil, errors.New("unable to create interpreter, content is empty")
 	}
 
-	i := Interpreter{
-		parser:      parser.NewParser(),
+	return &Interpreter{
+		parser:      parser.New(),
 		headerCount: make(map[string]int),
 		document:    document,
-	}
-
-	if err := i.validate(); err != nil {
-		return nil, err
-	}
-
-	return &i, nil
+	}, nil
 }
 
-func (i *Interpreter) Toc() string {
-	return i.toc
-}
-
+// GenerateToc will use the parser to generate a tree from the document. Once
+// constructed the interpreter will walk the tree and create the header string
+// based on the tree node string and depth.
 func (i *Interpreter) GenerateToc() error {
 	var doc io.Reader
 	var err error
@@ -65,9 +64,10 @@ func (i *Interpreter) GenerateToc() error {
 		return fmt.Errorf("unable to parse document: %w", err)
 	}
 
-	// build toc string by processing each node
-	i.parser.WalkTree(func(header parser.Header, depth int) {
-		trimmed := strings.TrimSpace(header.Name)
+	// build toc string by processing each node, use DFS to maintain proper
+	// order in a toc
+	i.parser.WalkTree(func(header string, depth int) {
+		trimmed := strings.TrimSpace(header)
 		var suffix string
 		if i.headerCount[trimmed] > 0 {
 			suffix = "-" + strconv.Itoa(i.headerCount[trimmed])
@@ -75,18 +75,21 @@ func (i *Interpreter) GenerateToc() error {
 		i.headerCount[trimmed]++
 
 		// write table of content line based on header name and depth
-		link := strings.Repeat("\t", depth) +
-			"* [" + trimmed + "](#" + i.formatHeaderLink(header.Name) +
+		i.toc += strings.Repeat("\t", depth) +
+			"* [" + trimmed + "](#" + i.formatHeaderLink(header) +
 			suffix + ")\n"
-
-		i.toc += link
 	})
 
 	if len(i.toc) > 0 {
-		i.toc = "\n" + generatedComment + "\n" + i.toc + "\n" + generatedComment + "\n"
+		i.toc = generatedComment + "\n" + i.toc + generatedComment + "\n"
 	}
 
 	return nil
+}
+
+// Toc returns the table of contents string
+func (i *Interpreter) Toc() string {
+	return i.toc
 }
 
 func (i *Interpreter) formatHeaderLink(text string) string {

@@ -1,9 +1,10 @@
 package interpreter
 
 import (
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func TestGenerateToc(t *testing.T) {
@@ -56,7 +57,7 @@ test tester test
 		},
 	} {
 		t.Run(tc.description, func(t *testing.T) {
-			interpreter, err := NewInterpreter(tc.document)
+			interpreter, err := New(tc.document)
 			require.NoError(t, err)
 
 			err = interpreter.GenerateToc()
